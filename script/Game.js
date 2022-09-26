@@ -26,21 +26,20 @@ const getRandomSize = () => {
 }
 
 function Game() {
-  const game = {
-    $elem: $('#game-screen'),
-    id: 'game-screen',
-    dimension: DIMENSION,
-    loop: null,
-    player: null,
-    obstacles: [],
-    lastObstacleSpawn: new Date(),
-    spawnCD: 0
-  }
+  this.$elem = null
+  this.id = 'game-screen'
+  this.dimension = DIMENSION
+  this.loop = null
+  this.player = null
+  this.obstacles = []
+  this.lastObstacleSpawn = new Date()
+  this.spawnCD = 0
 
   // Initialize Game
   const init = () => {
-    const { dimension: { w, h } } = game
-    game.$elem
+    const { dimension: { w, h } } = this
+
+    this.$elem = $('#game-screen')
       .css('width', w)
       .css('height', h)
   }
@@ -48,46 +47,46 @@ function Game() {
 
   // Handling Key Down
   const handleKeyDown = (e) => {
-    game.player.setCharacterMovement(true, e.keyCode)
+    this.player.setCharacterMovement(true, e.keyCode)
   }
 
   // Handling Key Up
   const handleKeyUp = (e) => {
-    game.player.setCharacterMovement(false, e.keyCode)
+    this.player.setCharacterMovement(false, e.keyCode)
   }
 
   // Generate Obstacles
   const generateObstacles = () => {
     const currTime = new Date()
-    const timeDiff = currTime - game.lastObstacleSpawn
+    const timeDiff = currTime - this.lastObstacleSpawn
 
-    if (timeDiff >= game.spawnCD) {
+    if (timeDiff >= this.spawnCD) {
       const randomWidth = getRandomSize()
       const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - randomWidth
 
-      game.spawnCD = getRandomMS()
-      game.lastObstacleSpawn = currTime
-      game.obstacles.push(new Obstacle({
+      this.spawnCD = getRandomMS()
+      this.lastObstacleSpawn = currTime
+      this.obstacles.push(new Obstacle({
         initDimension: {...O_DIMENSION, w: randomWidth},
         initVelocity: O_VELOCITY,
         initBackground: O_BACKGROUND,
         initPos: { x: randomPos, y: 0 }
-      }, game.$elem))
+      }, this.$elem))
     }
   }
 
   // Update Character & Obstacles Movements
   const updateMovements = () => {
     // Move Character
-    game.player.moveCharacter()
+    this.player.moveCharacter()
 
     // Move Objects & Clean Up
-    for (let i = 0; i < game.obstacles.length; i += 1) {
-      const obstacle = game.obstacles[i];
+    for (let i = 0; i < this.obstacles.length; i += 1) {
+      const obstacle = this.obstacles[i];
       const isInScreen = obstacle.moveObstacle()
       if (!isInScreen) {
         obstacle.removeObstacle()
-        game.obstacles.splice(i, 1)
+        this.obstacles.splice(i, 1)
         i -= 1
       }
     }
@@ -99,24 +98,14 @@ function Game() {
       $elem,
       position: { x: cX, y: cY },
       dimension: { w: cW, h: cH }
-    } = game.player.getInfo()
+    } = this.player
 
-    game.obstacles.forEach(function(obstacle) {
-      const {
-        position: { x: oX, y: oY },
-        dimension: { w: oW, h: oH }
-      } = obstacle.getInfo()
-
-      if (
-        cX < oX + oW &&
-        cX + cW > oX &&
-        cY < oY + oH &&
-        cY + cH > oY
-      ) {
+    this.obstacles.forEach(function({ position: { x: oX, y: oY }, dimension: { w: oW, h: oH } }) {
+      // ! Do not need to have an else statement because if the first if statement is true it should stop running or minus health...etc
+      const hasCollided = cX < oX + oW && cX + cW > oX && cY < oY + oH && cY + cH > oY
+      if (hasCollided) {
         console.log('collision')
         $elem.css('background', 'black')
-      } else {
-        $elem.css('background', 'green')
       }
     })
   }
@@ -133,10 +122,10 @@ function Game() {
     $(document).on('keyup', handleKeyUp)
 
     // Initialize Character
-    game.player = new Character(game.$elem)
+    this.player = new Character(this.$elem)
 
     // Start Interval
-    game.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
+    this.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
   }
 
   this.stopGame = () => {
@@ -144,16 +133,16 @@ function Game() {
     $(document).off('keyup', handleKeyUp)
 
     // Clear Interval
-    clearInterval(game.loop)
+    clearInterval(this.loop)
 
     // Clear Game Screen
-    game.$elem.empty()
+    this.$elem.empty()
 
     // Reset Variables
-    game.loop = null
-    game.player = null
-    game.obstacles = []
-    game.lastObstacleSpawn = new Date() - 3000
+    this.loop = null
+    this.player = null
+    this.obstacles = []
+    this.lastObstacleSpawn = new Date() - 3000
   }
 }
 

@@ -5,21 +5,20 @@ const BACKGROUND = 'red'
 const MOVEMENT_KEYS = { left: 37, right: 39 }
 
 function Character($game) {
-  const character = {
-    $elem: null,
-    id: `_${Math.random().toString(36).substring(2, 15)}`,
-    dimension: DIMENSION,
-    velocity: VELOCITY,
-    background: BACKGROUND,
-    movementKeys: MOVEMENT_KEYS,
-    movement: { left: false, right: false, },
-    position: { x: ($game.width() - DIMENSION.w) / 2, y: $game.height() - DIMENSION.h },
-  }
+  this.$elem = null
+  this.id = `_${Math.random().toString(36).substring(2, 15)}`
+  this.dimension = DIMENSION
+  this.velocity = VELOCITY
+  this.background = BACKGROUND
+  this.movementKeys = MOVEMENT_KEYS
+  this.movement = { left: false, right: false, }
+  this.position = { x: ($game.width() - DIMENSION.w) / 2, y: $game.height() - DIMENSION.h }
 
   // Initialize Character & Append to game
   const init = () => {
-    const { id, position: { x, y }, dimension: { w, h }, background } = character
-    character.$elem = $(`<div id="${id}"></div>`)
+    const { id, position: { x, y }, dimension: { w, h }, background } = this
+
+    this.$elem = $(`<div id="${id}"></div>`)
       .css('left', x)
       .css('top', y)
       .css('background', background)
@@ -32,13 +31,14 @@ function Character($game) {
 
   // Toggle which direction the character is moving to
   this.setCharacterMovement = (value, keyCode) => {
-    const { movementKeys: { left, right } } = character
+    const { movementKeys: { left, right } } = this
+
     switch (keyCode) {
       case left:
-        character.movement.left = value
+        this.movement.left = value
         break
       case right:
-        character.movement.right = value
+        this.movement.right = value
         break
     }
   }
@@ -46,33 +46,14 @@ function Character($game) {
   // Everytime this gets invoked, update character position
   this.moveCharacter = () => {
     const gameW = $game.width()
-    const {
-      velocity,
-      dimension: { w },
-      position: { x },
-      movement: { left, right }
-    } = character
+    const { position: { x }, dimension: { w }, movement: { left, right }, velocity } = this
 
     let newX = x
+    if (left) newX = x - velocity < 0 ? 0 : newX - velocity
+    if (right) newX = x + w + velocity > gameW ? gameW - w : newX + velocity
 
-    if (left) {
-      newX = x - velocity < 0 ? 0 : newX - velocity
-    }
-
-    if (right) {
-      newX = x + w + velocity > gameW ? gameW - w : newX + velocity
-    }
-
-    character.position.x = newX
-    character.$elem.css('left', newX)
-  }
-
-  this.getInfo = () => {
-    return {
-      $elem: character.$elem,
-      dimension: character.dimension,
-      position: character.position
-    }
+    this.position.x = newX
+    this.$elem.css('left', newX)
   }
 }
 
