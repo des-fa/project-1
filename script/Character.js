@@ -27,7 +27,6 @@ function Character({ initDimension, initVelocity, initPos, initBackground, movem
       .css('position', 'absolute')
       .appendTo('#game-screen')
   }
-
   init()
 
   // Toggle which direction the character is moving to
