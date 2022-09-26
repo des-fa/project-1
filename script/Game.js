@@ -1,18 +1,28 @@
 import Character from './Character.js'
 import Obstacle from './Obstacle.js'
 
-function Game({ id, loopInterval, initDimension }) {
+// GAME CONSTANTS
+const DIMENSION = { w: 600, h: 700 }
+const FPS = 60
+const LOOP_INTERVAL = Math.round(1000 / FPS)
+
+// OBSTACLE CONTACTS
+const O_DIMENSION = { w: 50, h: 50 }
+const O_VELOCITY = 2.5
+const O_BACKGROUND = 'blue'
+
+function Game() {
   const game = {
-    $elem: $(id),
-    id,
-    dimension: initDimension,
+    $elem: $('#game-screen'),
+    id: 'game-screen',
+    dimension: DIMENSION,
     loop: null,
     player: null,
     obstacles: [],
-    lastObstacleSpawn: new Date()
+    lastObstacleSpawn: new Date() - 3000
   }
 
-  // Set the game width and height
+  // Initialize Game
   const init = () => {
     const { dimension: { w, h } } = game
     game.$elem
@@ -31,6 +41,7 @@ function Game({ id, loopInterval, initDimension }) {
     game.player.setCharacterMovement(false, e.keyCode)
   }
 
+  // Generate Obstacles
   const generateObstacles = () => {
     const currTime = new Date()
     const timeDiff = currTime - game.lastObstacleSpawn
@@ -38,9 +49,16 @@ function Game({ id, loopInterval, initDimension }) {
     if (timeDiff >= 3000) {
       console.log('spawn')
       game.lastObstacleSpawn = currTime
+      game.obstacles.push(new Obstacle({
+        initDimension: O_DIMENSION,
+        initVelocity: O_VELOCITY,
+        initBackground: O_BACKGROUND,
+        initPos: { x: 0, y: 0 }
+      }, game.$elem))
     }
   }
 
+  // Update Character & Obstacles Movements
   const updateMovements = () => {
     // Move Character
     game.player.moveCharacter()
@@ -57,6 +75,7 @@ function Game({ id, loopInterval, initDimension }) {
     }
   }
 
+  // Interval Handler
   const handleGameLoop = () => {
     generateObstacles()
     updateMovements()
@@ -66,15 +85,28 @@ function Game({ id, loopInterval, initDimension }) {
     $(document).on('keydown', handleKeyDown)
     $(document).on('keyup', handleKeyUp)
 
-    game.loop = setInterval(handleGameLoop, loopInterval)
+    // Initialize Character
+    game.player = new Character(game.$elem)
+
+    // Start Interval
+    game.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
   }
 
-  this.addPlayer = (setting) => {
-    game.player = new Character(setting, game.$elem)
-  }
+  this.stopGame = () => {
+    $(document).off('keydown', handleKeyDown)
+    $(document).off('keyup', handleKeyUp)
 
-  this.addObstacle = (setting) => {
-    game.obstacles.push(new Obstacle(setting, game.$elem))
+    // Clear Interval
+    clearInterval(game.loop)
+
+    // Clear Game Screen
+    game.$elem.empty()
+
+    // Reset Variables
+    game.loop = null
+    game.player = null
+    game.obstacles = []
+    game.lastObstacleSpawn = new Date() - 3000
   }
 }
 

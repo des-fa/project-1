@@ -1,14 +1,14 @@
-function Obstacle({ initDimension, initVelocity, initPos, initBackground }, $game) {
+function Obstacle({initDimension, initVelocity, initBackground, initPos}, $game) {
   const obstacle = {
     $elem: null,
     id: `_${Math.random().toString(36).substring(2, 15)}`,
     dimension: initDimension,
     velocity: initVelocity,
+    background: initBackground,
     position: initPos,
-    background: initBackground
   }
 
-  // Create obstacle and appends the obstacle to game-screen
+  // Initialize Obstacle & Append to game
   const init = () => {
     const { id, position: { x, y }, dimension: { w, h }, background } = obstacle
     obstacle.$elem = $(`<div id="${id}"></div>`)
@@ -27,7 +27,6 @@ function Obstacle({ initDimension, initVelocity, initPos, initBackground }, $gam
     const gameH = $game.height()
     const {
       velocity,
-      dimension: { h },
       position: { y },
     } = obstacle
 
@@ -37,11 +36,7 @@ function Obstacle({ initDimension, initVelocity, initPos, initBackground }, $gam
     obstacle.position.y = newY
     obstacle.$elem.css('top', newY)
 
-    if (newY >= gameH) {
-      return false
-    } else {
-      return true
-    }
+    return newY < gameH
   }
 
   this.removeObstacle = () => {
