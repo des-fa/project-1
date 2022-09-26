@@ -1,6 +1,6 @@
 // CHARACTER CONSTANTS
 const DIMENSION = { w: 50, h: 50 }
-const VELOCITY = 2.5
+const VELOCITY = 4
 const BACKGROUND = 'red'
 const MOVEMENT_KEYS = { left: 37, right: 39 }
 
@@ -65,6 +65,14 @@ function Character($game) {
 
     character.position.x = newX
     character.$elem.css('left', newX)
+  }
+
+  this.getInfo = () => {
+    return {
+      $elem: character.$elem,
+      dimension: character.dimension,
+      position: character.position
+    }
   }
 }
 

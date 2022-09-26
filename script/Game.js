@@ -2,14 +2,28 @@ import Character from './Character.js'
 import Obstacle from './Obstacle.js'
 
 // GAME CONSTANTS
-const DIMENSION = { w: 600, h: 700 }
+const DIMENSION = { w: 400, h: 700 }
 const FPS = 60
 const LOOP_INTERVAL = Math.round(1000 / FPS)
 
-// OBSTACLE CONTACTS
-const O_DIMENSION = { w: 50, h: 50 }
+// OBSTACLE CONSTANTS
+const O_DIMENSION = { h: 50 }
 const O_VELOCITY = 2.5
 const O_BACKGROUND = 'blue'
+
+// Util Functions
+
+// Generate Random Number for Obstacle Creation
+const getRandomMS = () => {
+  let randomMS = Math.floor(Math.random() * (5000 - 1500 + 1) + 1500)
+  return randomMS
+}
+
+// Generate Random Number for Obstacle Size
+const getRandomSize = () => {
+  let randomSize = Math.floor(Math.random() * (300 - 50 + 1) + 50)
+  return randomSize
+}
 
 function Game() {
   const game = {
@@ -19,7 +33,8 @@ function Game() {
     loop: null,
     player: null,
     obstacles: [],
-    lastObstacleSpawn: new Date() - 3000
+    lastObstacleSpawn: new Date(),
+    spawnCD: 0
   }
 
   // Initialize Game
@@ -46,14 +61,17 @@ function Game() {
     const currTime = new Date()
     const timeDiff = currTime - game.lastObstacleSpawn
 
-    if (timeDiff >= 3000) {
-      console.log('spawn')
+    if (timeDiff >= game.spawnCD) {
+      const randomWidth = getRandomSize()
+      const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - randomWidth
+
+      game.spawnCD = getRandomMS()
       game.lastObstacleSpawn = currTime
       game.obstacles.push(new Obstacle({
-        initDimension: O_DIMENSION,
+        initDimension: {...O_DIMENSION, w: randomWidth},
         initVelocity: O_VELOCITY,
         initBackground: O_BACKGROUND,
-        initPos: { x: 0, y: 0 }
+        initPos: { x: randomPos, y: 0 }
       }, game.$elem))
     }
   }
@@ -75,10 +93,39 @@ function Game() {
     }
   }
 
+  //Detect collision
+  const detectColl = () => {
+    const {
+      $elem,
+      position: { x: cX, y: cY },
+      dimension: { w: cW, h: cH }
+    } = game.player.getInfo()
+
+    game.obstacles.forEach(function(obstacle) {
+      const {
+        position: { x: oX, y: oY },
+        dimension: { w: oW, h: oH }
+      } = obstacle.getInfo()
+
+      if (
+        cX < oX + oW &&
+        cX + cW > oX &&
+        cY < oY + oH &&
+        cY + cH > oY
+      ) {
+        console.log('collision')
+        $elem.css('background', 'black')
+      } else {
+        $elem.css('background', 'green')
+      }
+    })
+  }
+
   // Interval Handler
   const handleGameLoop = () => {
     generateObstacles()
     updateMovements()
+    detectColl()
   }
 
   this.startGame = () => {

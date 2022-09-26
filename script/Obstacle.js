@@ -42,6 +42,13 @@ function Obstacle({initDimension, initVelocity, initBackground, initPos}, $game)
   this.removeObstacle = () => {
     obstacle.$elem.remove()
   }
+
+  this.getInfo = () => {
+    return {
+      dimension: obstacle.dimension,
+      position: obstacle.position
+    }
+  }
 }
 
 export default Obstacle
