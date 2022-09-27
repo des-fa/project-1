@@ -12,5 +12,3 @@ $startBtn.on("click", game.startGame)
 $retryBtn.on("click", game.startGame)
 $instructBtn.on("click", game.showInstructions)
 $backBtn.on("click", game.backToStart)
-
-// make counter

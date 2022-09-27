@@ -6,6 +6,10 @@ const $startScreen = $("#start-screen")
 const $instructions = $("#instructions-screen")
 const $gameOver = $("#game-over-screen")
 const $gameArea = $("#game-area")
+const $countdownDiv = $("#countdown-container")
+const $countdown = $("#countdown")
+const $score = $(".score")
+const $inGameCounter= $("#in-game-counter")
 
 // GAME CONSTANTS
 const DIMENSION = { w: 400, h: 700 }
@@ -40,6 +44,8 @@ function Game() {
   this.obstacles = []
   this.lastObstacleSpawn = new Date()
   this.spawnCD = 0
+  this.scoreStartTime = null
+  this.score = null
 
   // Initialize Game
   const init = () => {
@@ -60,6 +66,14 @@ function Game() {
   // Handling Key Up
   const handleKeyUp = (e) => {
     this.player.setCharacterMovement(false, e.keyCode)
+  }
+  // Track Score
+  const trackScore= () => {
+    if (!this.scoreStartTime) this.scoreStartTime = new Date()
+
+    const currT = new Date()
+    this.score = Math.floor((currT - this.scoreStartTime) / 1000)
+    $score.html(this.score)
   }
 
   // Generate Obstacles
@@ -122,6 +136,7 @@ function Game() {
   const handleGameLoop = () => {
     generateObstacles()
     updateMovements()
+    trackScore()
     detectColl()
   }
 
@@ -130,17 +145,35 @@ function Game() {
     $(document).on('keydown', handleKeyDown)
     $(document).on('keyup', handleKeyUp)
 
+    // Show Game Screen & Elements
     $startScreen.fadeOut()
-    $gameOver.fadeOut()
+    $gameOver.hide()
     $gameArea.fadeIn()
+    $countdownDiv.fadeIn()
 
-    setTimeout(() => {
-      // Initialize Character
-      this.player = new Character(this.$elem)
+    // Restart Score
+    $score.html('0')
 
-      // Start Interval
-      this.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
-    }, 3000)
+    //Countdown to Play
+    let countdown = ['3', '2', '1', 'GO!', '']
+    countdown.forEach((text, i) => {
+      setTimeout(() => {
+        $countdown.html(text)
+
+        if (i === 4) {
+          $countdownDiv.hide()
+          $countdown.hide()
+          $inGameCounter.show()
+
+          // Initialize Character
+          this.player = new Character(this.$elem)
+
+          // Start Interval
+          this.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
+        }
+      }, i * 1000)
+    })
+
   }
 
   // Stop Game
@@ -152,16 +185,19 @@ function Game() {
     clearInterval(this.loop)
 
     // Clear Game Screen
-    this.$elem.empty()
+    // this.$elem:not:nth-child(-n + 2).empty()
+
+    // Show Game Over Screen
+    $gameArea.fadeOut()
+    $gameOver.fadeIn()
 
     // Reset Variables
     this.loop = null
     this.player = null
     this.obstacles = []
     this.lastObstacleSpawn = new Date() - 3000
-
-    $gameArea.fadeOut()
-    $gameOver.fadeIn()
+    this.scoreStartTime = null
+    this.score = null
   }
 
   // Show Instructions
