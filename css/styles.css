@@ -1,6 +1,14 @@
-#game-screen {
+#game-screen,
+#game-over-screen,
+#game-area {
   position: relative;
   background: gray;
   overflow: hidden;
   margin: 0 auto;
+}
+
+#start-screen, #instructions-screen, #game-over-screen,
+#game-area {
+  width: 100%;
+  height: 100%;
 }

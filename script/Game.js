@@ -1,6 +1,12 @@
 import Character from './Character.js'
 import Obstacle from './Obstacle.js'
 
+// JQUERY CONSTANTS
+const $startScreen = $("#start-screen")
+const $instructions = $("#instructions-screen")
+const $gameOver = $("#game-over-screen")
+const $gameArea = $("#game-area")
+
 // GAME CONSTANTS
 const DIMENSION = { w: 400, h: 700 }
 const FPS = 60
@@ -27,7 +33,7 @@ const getRandomSize = () => {
 
 function Game() {
   this.$elem = null
-  this.id = 'game-screen'
+  this.id = 'game-area'
   this.dimension = DIMENSION
   this.loop = null
   this.player = null
@@ -39,9 +45,10 @@ function Game() {
   const init = () => {
     const { dimension: { w, h } } = this
 
-    this.$elem = $('#game-screen')
-      .css('width', w)
-      .css('height', h)
+    // Set Game Screen
+    $('#game-screen').css('width', w).css('height', h)
+    // Set Game Area
+    this.$elem = $('#game-area')
   }
   init()
 
@@ -118,17 +125,25 @@ function Game() {
     detectColl()
   }
 
+  // Start Game
   this.startGame = () => {
     $(document).on('keydown', handleKeyDown)
     $(document).on('keyup', handleKeyUp)
 
-    // Initialize Character
-    this.player = new Character(this.$elem)
+    $startScreen.fadeOut()
+    $gameOver.fadeOut()
+    $gameArea.fadeIn()
 
-    // Start Interval
-    this.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
+    setTimeout(() => {
+      // Initialize Character
+      this.player = new Character(this.$elem)
+
+      // Start Interval
+      this.loop = setInterval(handleGameLoop, LOOP_INTERVAL)
+    }, 3000)
   }
 
+  // Stop Game
   this.stopGame = () => {
     $(document).off('keydown', handleKeyDown)
     $(document).off('keyup', handleKeyUp)
@@ -144,6 +159,21 @@ function Game() {
     this.player = null
     this.obstacles = []
     this.lastObstacleSpawn = new Date() - 3000
+
+    $gameArea.fadeOut()
+    $gameOver.fadeIn()
+  }
+
+  // Show Instructions
+  this.showInstructions = () => {
+    $startScreen.fadeOut()
+    $instructions.fadeIn()
+  }
+
+  // Back to Start Screen
+  this.backToStart = () => {
+    $instructions.fadeOut()
+    $startScreen.fadeIn()
   }
 }
 
