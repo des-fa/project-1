@@ -1,5 +1,6 @@
 import Character from './Character.js'
-import Obstacle from './Obstacle.js'
+import ObstacleA from './ObstacleA.js'
+import ObstacleB from './ObstacleB.js'
 
 // JQUERY CONSTANTS
 const $startScreen = $("#start-screen")
@@ -17,9 +18,12 @@ const FPS = 60
 const LOOP_INTERVAL = Math.round(1000 / FPS)
 
 // OBSTACLE CONSTANTS
-const O_DIMENSION = { h: 50 }
-const O_VELOCITY = 2.5
-const O_BACKGROUND = 'blue'
+const ObstacleA_DIMENSION = { h: 50 }
+const ObstacleA_VELOCITY = 2.5
+const ObstacleA_BACKGROUND = 'blue'
+const ObstacleB_DIMENSION = { w: 50, h: 50 }
+const ObstacleB_VELOCITY = 2.5
+const ObstacleB_BACKGROUND = 'pink'
 
 // Util Functions
 
@@ -87,12 +91,20 @@ function Game() {
 
       this.spawnCD = getRandomMS()
       this.lastObstacleSpawn = currTime
-      this.obstacles.push(new Obstacle({
-        initDimension: {...O_DIMENSION, w: randomWidth},
-        initVelocity: O_VELOCITY,
-        initBackground: O_BACKGROUND,
+      this.obstacles.push(new ObstacleA({
+        initDimension: {...ObstacleA_DIMENSION, w: randomWidth},
+        initVelocity: ObstacleA_VELOCITY,
+        initBackground: ObstacleA_BACKGROUND,
         initPos: { x: randomPos, y: 0 }
-      }, this.$elem))
+      }, this.$elem)
+      // CREATE RANDOMIZATION OF PUSHING OBSTACLE A/B
+      // new ObstacleB({
+      //   initDimension: ObstacleB_DIMENSION,
+      //   initVelocity: ObstacleB_VELOCITY,
+      //   initBackground: ObstacleB_BACKGROUND,
+      //   initPos: { x: randomPos, y: 0 }
+      // }, this.$elem)
+      )
     }
   }
 
@@ -122,10 +134,9 @@ function Game() {
     } = this.player
 
     this.obstacles.forEach(({ position: { x: oX, y: oY }, dimension: { w: oW, h: oH } }) => {
-      // ! Do not need to have an else statement because if the first if statement is true it should stop running or minus health...etc
+      // obstacles A & B stop game
       const hasCollided = cX < oX + oW && cX + cW > oX && cY < oY + oH && cY + cH > oY
       if (hasCollided) {
-        // console.log('collision')
         $elem.css('background', 'black')
         this.stopGame()
       }
