@@ -162,7 +162,6 @@ function Game() {
 
         if (i === 4) {
           $countdownDiv.hide()
-          $countdown.hide()
           $inGameCounter.show()
 
           // Initialize Character
@@ -185,11 +184,12 @@ function Game() {
     clearInterval(this.loop)
 
     // Clear Game Screen
-    // this.$elem:not:nth-child(-n + 2).empty()
+    this.$elem.find(":not(:nth-child(-n + 2))").remove()
 
     // Show Game Over Screen
     $gameArea.fadeOut()
     $gameOver.fadeIn()
+    $inGameCounter.hide()
 
     // Reset Variables
     this.loop = null
