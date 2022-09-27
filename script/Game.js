@@ -100,12 +100,13 @@ function Game() {
       dimension: { w: cW, h: cH }
     } = this.player
 
-    this.obstacles.forEach(function({ position: { x: oX, y: oY }, dimension: { w: oW, h: oH } }) {
+    this.obstacles.forEach(({ position: { x: oX, y: oY }, dimension: { w: oW, h: oH } }) => {
       // ! Do not need to have an else statement because if the first if statement is true it should stop running or minus health...etc
       const hasCollided = cX < oX + oW && cX + cW > oX && cY < oY + oH && cY + cH > oY
       if (hasCollided) {
-        console.log('collision')
+        // console.log('collision')
         $elem.css('background', 'black')
+        this.stopGame()
       }
     })
   }
