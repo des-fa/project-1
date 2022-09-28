@@ -1,11 +1,19 @@
-function Item({initDimension, initVelocity, initBackground, initPos}, $game) {
+const itemTypes = [{normal: 'yellow'}, {speedUp: 'green'}, {immune: 'black'}, {slowDown:'purple'}, {torch: 'orange'}]
+
+function Item({initDimension, initVelocity, initPos}, $game) {
   this.$elem = null
   this.id = `_${Math.random().toString(36).substring(2, 15)}`
   this.type = null
   this.dimension = initDimension
   this.velocity = initVelocity
-  this.background = initBackground
+  this.background = null
   this.position = initPos
+
+  // Generate & Assign Random Type & Colour
+  // WAY TO ASSIGN MORE NORMAL TYPES?!
+  let itemType = itemTypes[Math.floor(Math.random() * itemTypes.length)]
+  this.type = itemType
+  this.background = Object.values(itemType)[0]
 
   // Initialize Item & Append to game
   const init = () => {
@@ -23,7 +31,7 @@ function Item({initDimension, initVelocity, initBackground, initPos}, $game) {
   init()
 
   // Every time this gets invoked, update item position, return false if outside of game box
-  this.moveObstacle = () => {
+  this.moveItem = () => {
     const gameH = $game.height()
     const { position: { y }, velocity } = this
 
@@ -36,7 +44,7 @@ function Item({initDimension, initVelocity, initBackground, initPos}, $game) {
     return newY < gameH
   }
 
-  this.removeObstacle = () => {
+  this.removeItem = () => {
     this.$elem.remove()
   }
 }

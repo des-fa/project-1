@@ -1,6 +1,6 @@
 // CHARACTER CONSTANTS
 const DIMENSION = { w: 50, h: 50 }
-const VELOCITY = 4
+const VELOCITY = 5
 const BACKGROUND = 'red'
 const MOVEMENT_KEYS = { left: 37, right: 39 }
 

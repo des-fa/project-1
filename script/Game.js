@@ -20,17 +20,21 @@ const LOOP_INTERVAL = Math.round(1000 / FPS)
 
 // OBSTACLE CONSTANTS
 const ObstacleA_DIMENSION = { h: 50 }
-const ObstacleA_VELOCITY = 2.5
+const ObstacleA_VELOCITY = 5
 const ObstacleA_BACKGROUND = 'blue'
 const ObstacleB_DIMENSION = { w: 50, h: 50 }
-const ObstacleB_VELOCITY = 2.5
+const ObstacleB_VELOCITY = 5
 const ObstacleB_BACKGROUND = 'pink'
+
+// ITEM CONSTANTS
+const Item_DIMENSION = { w: 30, h: 30  }
+const Item_VELOCITY = 3
 
 // Util Functions
 
 // Generate Random Number for Obstacle Creation
 const getRandomMS = () => {
-  let randomMS = Math.floor(Math.random() * (5000 - 1500 + 1) + 1500)
+  let randomMS = Math.floor(Math.random() * (1500 - 1000 + 1) + 1000)
   return randomMS
 }
 
@@ -40,6 +44,12 @@ const getRandomSize = () => {
   return randomSize
 }
 
+// Generate Random Number of Items
+const getRandomItemQuantity = () => {
+  let randomItemQ = Math.floor(Math.random() * (4 - 1 + 1) + 1)
+  return randomItemQ
+}
+
 function Game() {
   this.$elem = null
   this.id = 'game-area'
@@ -47,7 +57,8 @@ function Game() {
   this.loop = null
   this.player = null
   this.obstacles = []
-  this.lastObstacleSpawn = new Date()
+  this.items = []
+  this.lastObjectSpawn = new Date()
   this.spawnCD = 0
   this.scoreStartTime = null
   this.score = null
@@ -81,41 +92,63 @@ function Game() {
     $score.html(this.score)
   }
 
-  // Generate Obstacles
-  const generateObstacles = () => {
+  // Generate Obstacles & Items
+  const generateGameObjects = () => {
     const currTime = new Date()
-    const timeDiff = currTime - this.lastObstacleSpawn
+    const timeDiff = currTime - this.lastObjectSpawn
 
     if (timeDiff >= this.spawnCD) {
       this.spawnCD = getRandomMS()
-      this.lastObstacleSpawn = currTime
+      this.lastObjectSpawn = currTime
 
       let newObstacle = null
-      if (Math.random() < 0.5) {
-        const randomWidth = getRandomSize()
-        const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - randomWidth
-        newObstacle = new ObstacleA({
-          initDimension: {...ObstacleA_DIMENSION, w: randomWidth},
-          initVelocity: ObstacleA_VELOCITY,
-          initBackground: ObstacleA_BACKGROUND,
-          initPos: { x: randomPos, y: 0 }
-        }, this.$elem)
+      let newItem = null
 
+      if(Math.random() < 0.5) {
+        // Generate Item w/ Random Position
+        const itemPositions = [0, 80, 160, 240, 320]
+        const randomItemNum= getRandomItemQuantity()
+        for (let i = 0; i< randomItemNum; i += 1) {
+          const index = Math.floor(Math.random() * itemPositions.length)
+          const randomItemPos = itemPositions[index]
+          itemPositions.splice(index, 1)
+
+          newItem = new Item({
+            initDimension: { ...Item_DIMENSION },
+            initVelocity: Item_VELOCITY,
+            initPos: { x: randomItemPos, y: 0 }
+          }, this.$elem)
+
+          this.items.push(newItem)
+        }
       } else {
-        const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - ObstacleB_DIMENSION.w
-        newObstacle = new ObstacleB({
-          initDimension: { ...ObstacleB_DIMENSION },
-          initVelocity: ObstacleB_VELOCITY,
-          initBackground: ObstacleB_BACKGROUND,
-          initPos: { x: randomPos, y: 0 }
-        }, this.$elem)
-      }
-
+        // Generate Random Obstacles
+        if (Math.random() < 0.5) {
+          // Generate Obstacle A
+          const randomWidth = getRandomSize()
+          const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - randomWidth
+          newObstacle = new ObstacleA({
+            initDimension: {...ObstacleA_DIMENSION, w: randomWidth},
+            initVelocity: ObstacleA_VELOCITY,
+            initBackground: ObstacleA_BACKGROUND,
+            initPos: { x: randomPos, y: 0 }
+          }, this.$elem)
+        } else {
+          // Generate Obstacle B
+          const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w -   ObstacleB_DIMENSION.w
+          newObstacle = new ObstacleB({
+            initDimension: { ...ObstacleB_DIMENSION },
+            initVelocity: ObstacleB_VELOCITY,
+            initBackground: ObstacleB_BACKGROUND,
+            initPos: { x: randomPos, y: 0 }
+          }, this.$elem)
+        }
       this.obstacles.push(newObstacle)
+      }
     }
   }
 
-  // Update Character & Obstacles Movements
+  // Update Character & Objects' Movements
   const updateMovements = () => {
     // Move Character
     this.player.moveCharacter()
@@ -130,6 +163,15 @@ function Game() {
         i -= 1
       }
     }
+    for (let i = 0; i < this.items.length; i += 1) {
+      const item = this.items[i];
+      const isInScreen = item.moveItem()
+      if (!isInScreen) {
+        item.removeItem()
+        this.items.splice(i, 1)
+        i -= 1
+      }
+    }
   }
 
   //Detect collision
@@ -141,18 +183,27 @@ function Game() {
     } = this.player
 
     this.obstacles.forEach(({ position: { x: oX, y: oY }, dimension: { w: oW, h: oH } }) => {
-      // obstacles A & B stop game
+      // Obstacles A & B stop game
       const hasCollided = cX < oX + oW && cX + cW > oX && cY < oY + oH && cY + cH > oY
       if (hasCollided) {
-        $elem.css('background', 'black')
+        // $elem.css('background', 'black')
         this.stopGame()
+      }
+    })
+
+    this.items.forEach(({ position: { x: iX, y: iY }, dimension: { w: iW, h: iH } }) => {
+      // Items fade Out
+      const hasCollided = cX < iX + iW && cX + cW > iX && cY < iY + iH && cY + cH > iY
+      if (hasCollided) {
+        this.$elem.css('background', 'black')
+        // Normal items add to bonus
       }
     })
   }
 
   // Interval Handler
   const handleGameLoop = () => {
-    generateObstacles()
+    generateGameObjects()
     updateMovements()
     trackScore()
     detectColl()
@@ -213,7 +264,8 @@ function Game() {
     this.loop = null
     this.player = null
     this.obstacles = []
-    this.lastObstacleSpawn = new Date() - 3000
+    this.items = []
+    this.lastObjectSpawn = new Date() - 3000
     this.scoreStartTime = null
     this.score = null
   }
