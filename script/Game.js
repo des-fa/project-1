@@ -12,6 +12,7 @@ const $countdownDiv = $("#countdown-container")
 const $countdown = $("#countdown")
 const $score = $(".score")
 const $inGameCounter= $("#in-game-counter")
+const $boxEffect = $("#box-effect")
 
 // GAME CONSTANTS
 const DIMENSION = { w: 400, h: 700 }
@@ -20,10 +21,10 @@ const LOOP_INTERVAL = Math.round(1000 / FPS)
 
 // OBSTACLE CONSTANTS
 const ObstacleA_DIMENSION = { h: 50 }
-const ObstacleA_VELOCITY = 5
+const ObstacleA_VELOCITY = 4
 const ObstacleA_BACKGROUND = 'blue'
 const ObstacleB_DIMENSION = { w: 50, h: 50 }
-const ObstacleB_VELOCITY = 5
+const ObstacleB_VELOCITY = 4
 const ObstacleB_BACKGROUND = 'pink'
 
 // ITEM CONSTANTS
@@ -62,6 +63,8 @@ function Game() {
   this.spawnCD = 0
   this.scoreStartTime = null
   this.score = null
+  this.bonus = null
+  this.detectCollision = true
 
   // Initialize Game
   const init = () => {
@@ -89,7 +92,7 @@ function Game() {
 
     const currT = new Date()
     this.score = Math.floor((currT - this.scoreStartTime) / 1000)
-    $score.html(this.score)
+    $score.html(this.score + this.bonus)
   }
 
   // Generate Obstacles & Items
@@ -104,7 +107,14 @@ function Game() {
       let newObstacle = null
       let newItem = null
 
-      if(Math.random() < 0.5) {
+      // Weighted Randomization of Objects
+      const assignObjectWeight = [['obstacles', 7], ['items', 3]]
+      const weightedObjects = assignObjectWeight.map(([x, y]) => Array(y).fill(x)).flat()
+      const randomObjectIndex= Math.floor(Math.random() * weightedObjects.length)
+      const randomObject= weightedObjects[randomObjectIndex]
+      console.log(randomObject)
+
+      if(randomObject === 'items') {
         // Generate Item w/ Random Position
         const itemPositions = [0, 80, 160, 240, 320]
         const randomItemNum= getRandomItemQuantity()
@@ -118,7 +128,6 @@ function Game() {
             initVelocity: Item_VELOCITY,
             initPos: { x: randomItemPos, y: 0 }
           }, this.$elem)
-
           this.items.push(newItem)
         }
       } else {
@@ -177,28 +186,40 @@ function Game() {
   //Detect collision
   const detectColl = () => {
     const {
-      $elem,
       position: { x: cX, y: cY },
-      dimension: { w: cW, h: cH }
+      dimension: { w: cW, h: cH },
     } = this.player
 
-    this.obstacles.forEach(({ position: { x: oX, y: oY }, dimension: { w: oW, h: oH } }) => {
-      // Obstacles A & B stop game
-      const hasCollided = cX < oX + oW && cX + cW > oX && cY < oY + oH && cY + cH > oY
-      if (hasCollided) {
-        // $elem.css('background', 'black')
-        this.stopGame()
-      }
-    })
+    if (this.detectCollision) {
+      this.obstacles.forEach(({ position: { x: oX, y: oY },   dimension: { w: oW, h: oH } }) => {
+        // Obstacles A & B stop game
+        const hasCollided = cX < oX + oW && cX + cW > oX && cY <  oY + oH && cY + cH > oY
+        if (hasCollided) {
+          // $elem.css('background', 'black')
+          this.stopGame()
+        }
+      })
 
-    this.items.forEach(({ position: { x: iX, y: iY }, dimension: { w: iW, h: iH } }) => {
-      // Items fade Out
-      const hasCollided = cX < iX + iW && cX + cW > iX && cY < iY + iH && cY + cH > iY
-      if (hasCollided) {
-        this.$elem.css('background', 'black')
-        // Normal items add to bonus
-      }
-    })
+      this.items.forEach((item, i) => {
+        // Extract stuff from item
+        const {
+          $elem,
+          position: { x: iX, y: iY },
+          dimension: { w: iW, h: iH },
+          triggered,
+          reward,
+        } = item
+
+        // Items fade Out
+        const hasCollided = cX < iX + iW && cX + cW > iX && cY <  iY + iH && cY + cH > iY
+        if (hasCollided && !triggered) {
+          this.bonus += reward
+          $elem.fadeOut()
+          item.triggered = true
+          item.effect()
+        }
+      })
+    }
   }
 
   // Interval Handler
@@ -268,6 +289,7 @@ function Game() {
     this.lastObjectSpawn = new Date() - 3000
     this.scoreStartTime = null
     this.score = null
+    this.bonus = null
   }
 
   // Show Instructions
