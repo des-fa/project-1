@@ -1,11 +1,12 @@
 function ObstacleB({initDimension, initVelocity, initBackground, initPos}, $game) {
   this.$elem = null
   this.id = `_${Math.random().toString(36).substring(2, 15)}`
-  this.type = B
+  this.type = "B"
   this.dimension = initDimension
   this.velocity = initVelocity
   this.background = initBackground
   this.position = initPos
+  this.isLeft = Math.random() < 0.5
 
   // Initialize Obstacle & Append to game
   const init = () => {
@@ -22,41 +23,42 @@ function ObstacleB({initDimension, initVelocity, initBackground, initPos}, $game
   }
   init()
 
-  // Everytime this gets invoked, update obstacle position, return false if outside of game box
+  // Every time this gets invoked, update obstacle position, return false if outside of game box
   this.moveObstacle = () => {
     const gameW = $game.width()
     const gameH = $game.height()
     const {
       dimension: { w, h },
-      position: { x, y }, velocity } = this
-      movement: { left, right }
+      position: { x, y },
+      velocity,
+      isLeft
+    } = this
 
     let newX = x
     let newY = y
-    newX = newX + velocity
     newY = newY + velocity
 
-    if (left) {
-      newX = x - velocity < 0 ? 0 : newX - velocity
-    }
-    if (right) {
-      newX = x + w + velocity > gameW ? gameW - w : newX + velocity
+    if (isLeft) {
+      if (x - velocity < 0) {
+        newX = 0
+        this.isLeft = !isLeft
+      } else {
+        newX = newX - (velocity)
+      }
+    } else {
+      if (x + w + velocity > gameW) {
+        newX = gameW - w
+        this.isLeft = !isLeft
+      } else {
+        newX = newX + (velocity)
+      }
     }
 
     this.position.x = newX
     this.position.y = newY
     this.$elem.css('left', newX).css('top', newY)
 
-    // return newY < gameH
-    let margin = 0
-      const moveObstacleB = () => {
-        if (margin == gameW) {
-          margin = 0 + "px";
-        } else {
-          this.id.style.marginLeft = margin + "px";
-        }
-        margin += 10;
-      }
+    return newY < gameH
   }
 
   this.removeObstacle = () => {

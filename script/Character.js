@@ -43,7 +43,7 @@ function Character($game) {
     }
   }
 
-  // Everytime this gets invoked, update character position
+  // Every time this gets invoked, update character position
   this.moveCharacter = () => {
     const gameW = $game.width()
     const { position: { x }, dimension: { w }, movement: { left, right }, velocity } = this

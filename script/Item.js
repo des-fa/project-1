@@ -1,13 +1,13 @@
-function ObstacleA({initDimension, initVelocity, initBackground, initPos}, $game) {
+function Item({initDimension, initVelocity, initBackground, initPos}, $game) {
   this.$elem = null
   this.id = `_${Math.random().toString(36).substring(2, 15)}`
-  this.type = "A"
+  this.type = null
   this.dimension = initDimension
   this.velocity = initVelocity
   this.background = initBackground
   this.position = initPos
 
-  // Initialize Obstacle & Append to game
+  // Initialize Item & Append to game
   const init = () => {
     const { id, position: { x, y }, dimension: { w, h }, background } = this
 
@@ -22,7 +22,7 @@ function ObstacleA({initDimension, initVelocity, initBackground, initPos}, $game
   }
   init()
 
-  // Every time this gets invoked, update obstacle position, return false if outside of game box
+  // Every time this gets invoked, update item position, return false if outside of game box
   this.moveObstacle = () => {
     const gameH = $game.height()
     const { position: { y }, velocity } = this
@@ -41,4 +41,4 @@ function ObstacleA({initDimension, initVelocity, initBackground, initPos}, $game
   }
 }
 
-export default ObstacleA
+export default Item

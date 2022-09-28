@@ -1,6 +1,7 @@
 import Character from './Character.js'
 import ObstacleA from './ObstacleA.js'
 import ObstacleB from './ObstacleB.js'
+import Item from './Item.js'
 
 // JQUERY CONSTANTS
 const $startScreen = $("#start-screen")
@@ -86,25 +87,31 @@ function Game() {
     const timeDiff = currTime - this.lastObstacleSpawn
 
     if (timeDiff >= this.spawnCD) {
-      const randomWidth = getRandomSize()
-      const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - randomWidth
-
       this.spawnCD = getRandomMS()
       this.lastObstacleSpawn = currTime
-      this.obstacles.push(new ObstacleA({
-        initDimension: {...ObstacleA_DIMENSION, w: randomWidth},
-        initVelocity: ObstacleA_VELOCITY,
-        initBackground: ObstacleA_BACKGROUND,
-        initPos: { x: randomPos, y: 0 }
-      }, this.$elem)
-      // CREATE RANDOMIZATION OF PUSHING OBSTACLE A/B
-      // new ObstacleB({
-      //   initDimension: ObstacleB_DIMENSION,
-      //   initVelocity: ObstacleB_VELOCITY,
-      //   initBackground: ObstacleB_BACKGROUND,
-      //   initPos: { x: randomPos, y: 0 }
-      // }, this.$elem)
-      )
+
+      let newObstacle = null
+      if (Math.random() < 0.5) {
+        const randomWidth = getRandomSize()
+        const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - randomWidth
+        newObstacle = new ObstacleA({
+          initDimension: {...ObstacleA_DIMENSION, w: randomWidth},
+          initVelocity: ObstacleA_VELOCITY,
+          initBackground: ObstacleA_BACKGROUND,
+          initPos: { x: randomPos, y: 0 }
+        }, this.$elem)
+
+      } else {
+        const randomPos = Math.random() < 0.5 ? 0 : DIMENSION.w - ObstacleB_DIMENSION.w
+        newObstacle = new ObstacleB({
+          initDimension: { ...ObstacleB_DIMENSION },
+          initVelocity: ObstacleB_VELOCITY,
+          initBackground: ObstacleB_BACKGROUND,
+          initPos: { x: randomPos, y: 0 }
+        }, this.$elem)
+      }
+
+      this.obstacles.push(newObstacle)
     }
   }
 
