@@ -34,7 +34,7 @@ const itemTypes = {
             next()
           })
       }
-      setTimeout(speedUpCharacter, 3000)
+      setTimeout(speedUpCharacter, 4000)
     }
   },
   immune: {
@@ -65,7 +65,7 @@ const itemTypes = {
             next()
           })
       }
-      setTimeout(immunity, 3000)
+      setTimeout(immunity, 4000)
     }
   },
   slowDown: {
@@ -96,7 +96,7 @@ const itemTypes = {
             next()
           })
       }
-      setTimeout(slowCharacter, 3000)
+      setTimeout(slowCharacter, 4000)
     }
   },
   block: {

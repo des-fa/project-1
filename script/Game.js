@@ -40,7 +40,7 @@ const getRandomMS = () => {
 
 // Generate Random Number for Obstacle Size
 const getRandomSize = () => {
-  let randomSize = Math.floor(Math.random() * (300 - 50 + 1) + 50)
+  let randomSize = Math.floor(Math.random() * (300 - 100 + 1) + 100)
   return randomSize
 }
 
@@ -200,27 +200,27 @@ function Game() {
           this.stopGame()
         }
       })
-
-      this.items.forEach((item, i) => {
-        // Extract stuff from item
-        const {
-          $elem,
-          position: { x: iX, y: iY },
-          dimension: { w: iW, h: iH },
-          triggered,
-          reward,
-        } = item
-
-        // Items fade Out
-        const hasCollided = cX < iX + iW && cX + cW > iX && cY <  iY + iH && cY + cH > iY
-        if (hasCollided && !triggered) {
-          this.bonus += reward
-          $elem.fadeOut()
-          item.triggered = true
-          item.effect(this)
-        }
-      })
     }
+
+    this.items.forEach((item, i) => {
+      // Extract stuff from item
+      const {
+        $elem,
+        position: { x: iX, y: iY },
+        dimension: { w: iW, h: iH },
+        triggered,
+        reward,
+      } = item
+
+      // Items fade Out
+      const hasCollided = cX < iX + iW && cX + cW > iX && cY <  iY + iH && cY + cH > iY
+      if (hasCollided && !triggered) {
+        this.bonus += reward
+        $elem.fadeOut()
+        item.triggered = true
+        item.effect(this)
+      }
+    })
   }
 
   // Interval Handler
