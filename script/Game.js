@@ -21,10 +21,10 @@ const LOOP_INTERVAL = Math.round(1000 / FPS)
 
 // OBSTACLE CONSTANTS
 const ObstacleA_DIMENSION = { h: 50 }
-const ObstacleA_VELOCITY = 4
+const ObstacleA_VELOCITY = 3.75
 const ObstacleA_BACKGROUND = '#EEF1FF'
 const ObstacleB_DIMENSION = { w: 50, h: 50 }
-const ObstacleB_VELOCITY = 4
+const ObstacleB_VELOCITY = 3.75
 const ObstacleB_BACKGROUND = '#EFEFEF'
 
 // ITEM CONSTANTS
@@ -108,7 +108,7 @@ function Game() {
       let newItem = null
 
       // Weighted Randomization of Objects
-      const assignObjectWeight = [['obstacles', 7], ['items', 3]]
+      const assignObjectWeight = [['obstacles', 15], ['items', 9]]
       const weightedObjects = assignObjectWeight.map(([x, y]) => Array(y).fill(x)).flat()
       const randomObjectIndex= Math.floor(Math.random() * weightedObjects.length)
       const randomObject= weightedObjects[randomObjectIndex]

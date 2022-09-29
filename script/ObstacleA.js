@@ -17,7 +17,6 @@ function ObstacleA({initDimension, initVelocity, initBackground, initPos}, $game
       .css('background', background)
       .css('background-size', 'contain')
       .css('background-image', 'url("images/multiple-users-silhouette.png")')
-      // .css('background-repeat', 'no-repeat')
       .css('background-position', 'center')
       .css('border-radius','5px')
       .css('width', w)

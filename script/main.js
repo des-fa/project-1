@@ -7,6 +7,20 @@ const $instructBtn = $("#instructions-btn")
 const $homeBtn = $(".home-btn")
 const $moreBtn = $(".more-btn")
 const $backBtn = $(".back-btn")
+const $screenAudio = $("#screen-audio")
+
+
+
+
+const playScreenAudio = () => {
+  let screenAudio = new Audio("audio/screens.mp3")
+  if (screenAudio.paused) {
+    screenAudio.play();
+  } else {
+    screenAudio.currentTime = 0
+  }
+}
+$(document).ready(playScreenAudio)
 
 const game = new Game()
 

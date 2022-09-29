@@ -21,7 +21,9 @@ const itemTypes = {
           next()
         })
       game.player.velocity = 8
+      // game.player.css('background-image', 'url("images/sprint.png")')
       const speedUpCharacter = () => {
+        // game.player.css('background-image', 'url("images/run.png")')
         game.player.velocity = 6
         console.log("finished speed")
         $("#coffee")

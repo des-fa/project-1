@@ -24,6 +24,10 @@
   color: #EEF1FF !important;
 }
 
+#main-title {
+  font-size: 35px !important;
+}
+
 .instructions-title {
   border-bottom: 4px dashed !important;
 }
@@ -77,6 +81,3 @@ button {
   font-family: 'Electrolize', sans-serif !important;
   font-weight: bold !important;
 }
-
-/* font-family: 'Shrikhand', cursive !important; */
-  /* font-family: 'Ultra', serif !important; */
