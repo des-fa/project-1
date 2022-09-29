@@ -12,20 +12,19 @@ const $countdownDiv = $("#countdown-container")
 const $countdown = $("#countdown")
 const $score = $(".score")
 const $inGameCounter= $("#in-game-counter")
-const $boxEffect = $("#box-effect")
 
 // GAME CONSTANTS
-const DIMENSION = { w: 400, h: 700 }
+const DIMENSION = { w: 450, h: 700 }
 const FPS = 60
 const LOOP_INTERVAL = Math.round(1000 / FPS)
 
 // OBSTACLE CONSTANTS
 const ObstacleA_DIMENSION = { h: 50 }
 const ObstacleA_VELOCITY = 4
-const ObstacleA_BACKGROUND = 'blue'
+const ObstacleA_BACKGROUND = '#EEF1FF'
 const ObstacleB_DIMENSION = { w: 50, h: 50 }
 const ObstacleB_VELOCITY = 4
-const ObstacleB_BACKGROUND = 'pink'
+const ObstacleB_BACKGROUND = '#EFEFEF'
 
 // ITEM CONSTANTS
 const Item_DIMENSION = { w: 30, h: 30  }
@@ -191,7 +190,10 @@ function Game() {
     } = this.player
 
     if (this.detectCollision) {
-      this.obstacles.forEach(({ position: { x: oX, y: oY },   dimension: { w: oW, h: oH } }) => {
+      this.obstacles.forEach(({
+        position: { x: oX, y: oY },
+        dimension: { w: oW, h: oH }
+      }) => {
         // Obstacles A & B stop game
         const hasCollided = cX < oX + oW && cX + cW > oX && cY <  oY + oH && cY + cH > oY
         if (hasCollided) {
@@ -216,7 +218,7 @@ function Game() {
           this.bonus += reward
           $elem.fadeOut()
           item.triggered = true
-          item.effect()
+          item.effect(this)
         }
       })
     }
@@ -274,7 +276,7 @@ function Game() {
     clearInterval(this.loop)
 
     // Clear Game Screen
-    this.$elem.find(":not(:nth-child(-n + 2))").remove()
+    this.$elem.find(":not(:nth-child(-n + 3))").remove()
 
     // Show Game Over Screen
     $gameArea.fadeOut()

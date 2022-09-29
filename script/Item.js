@@ -1,62 +1,67 @@
 const itemTypes = {
   normal: {
-    weight: 6,
+    weight: 8,
     reward: 1,
-    background: 'white',
+    background: 'transparent',
     effect: function(){
       console.log('normal', this)
     }
   },
   speedUp: {
     weight: 1,
-    background: 'green',
+    background: '#99FEFF',
     reward: 0,
-    effect: function(){
-      // speedUp character, items, obstacles
+    effect: function(game){
+      // speedUp character
+      game.player.velocity = 8
+      const speedUpCharacter = () => {
+        game.player.velocity = 6
+      }
+      setTimeout(speedUpCharacter, 3000)
     }
   },
   immune: {
     weight: 1,
-    background: 'purple',
+    background: '#99FEFF',
     reward: 0,
-    effect: function(){
+    effect: function(game){
       // turn off collision detection
       console.log('immune')
-      this.detectCollision = false
+      game.detectCollision = false
       const immunity = () => {
-        this.detectCollision = true
+        game.detectCollision = true
         console.log('collide again')
       }
-      setTimeout(immunity, 1500)
+      setTimeout(immunity, 3000)
 
     }
   },
   slowDown: {
     weight: 1,
-    background: 'red',
+    background: '#99FEFF',
     reward: 0,
-    effect: function(){
+    effect: function(game){
       // slow down character velocity
       console.log('slowDown')
-      this.player.velocity = 3
+      game.player.velocity = 4
       const slowCharacter = () => {
-        this.player.velocity = 5
+        game.player.velocity = 6
       }
-      setTimeout(slowCharacter, 1500)
+      setTimeout(slowCharacter, 3000)
     }
   },
   block: {
     weight: 1,
-    background: 'black',
+    background: '#99FEFF',
     reward: 0,
     effect: function(){
       // add game layer to limit vision
-      console.log('blocked')
-      $boxEffect.show()
+      console.log('blocked', $("#box-effect"))
+      $("#box-effect").show()
       const hideBlock = () => {
-        $boxEffect.fadeOut()
+        $("#box-effect").fadeOut()
       }
-      setTimeout(hideBlock, 1500)
+      setTimeout(hideBlock, 4000)
     }
   }
 }
@@ -87,15 +92,29 @@ function Item({initDimension, initVelocity, initPos}, $game) {
   // Initialize Item & Append to game
   const init = () => {
     const { id, position: { x, y }, dimension: { w, h }, background } = this
-
-    this.$elem = $(`<div id="${id}"></div>`)
-      .css('left', x)
-      .css('top', y)
-      .css('background', background)
-      .css('width', w)
-      .css('height', h)
-      .css('position', 'absolute')
-      .appendTo($game)
+    if (this.type === 'normal') {
+      this.$elem = $(`<div id="${id}"></div>`)
+        .css('left', x)
+        .css('top', y)
+        .css('background', background)
+        .css('background-size', 'cover')
+        .css('background-image', 'url("images/kiss.png")')
+        .css('width', w)
+        .css('height', h)
+        .css('position', 'absolute')
+        .appendTo($game)
+    } else {
+      this.$elem = $(`<div id="${id}"></div>`)
+        .css('left', x)
+        .css('top', y)
+        .css('background', background)
+        .css('background-size', 'cover')
+        .css('background-image', 'url("images/block.png")')
+        .css('width', w)
+        .css('height', h)
+        .css('position', 'absolute')
+        .appendTo($game)
+    }
   }
   init()
 

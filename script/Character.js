@@ -1,7 +1,7 @@
 // CHARACTER CONSTANTS
 const DIMENSION = { w: 50, h: 50 }
-let VELOCITY = 5
-const BACKGROUND = 'red'
+const VELOCITY = 6
+const BACKGROUND = 'transparent'
 const MOVEMENT_KEYS = { left: 37, right: 39 }
 
 function Character($game) {
@@ -12,7 +12,7 @@ function Character($game) {
   this.background = BACKGROUND
   this.movementKeys = MOVEMENT_KEYS
   this.movement = { left: false, right: false, }
-  this.position = { x: ($game.width() - DIMENSION.w) / 2, y: $game.height() - DIMENSION.h }
+  this.position = { x: ($game.width() - DIMENSION.w) / 2, y: $game.height() - DIMENSION.h - 10 }
 
   // Initialize Character & Append to game
   const init = () => {
@@ -22,9 +22,12 @@ function Character($game) {
       .css('left', x)
       .css('top', y)
       .css('background', background)
+      .css('background-size', 'cover')
+      .css('background-image', 'url("images/run.png")')
       .css('width', w)
       .css('height', h)
       .css('position', 'absolute')
+      .css('margin-bottom', '5px')
       .appendTo($game)
   }
   init()

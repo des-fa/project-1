@@ -16,8 +16,13 @@ function ObstacleB({initDimension, initVelocity, initBackground, initPos}, $game
       .css('left', x)
       .css('top', y)
       .css('background', background)
+      .css('background-size', '75% auto')
+      .css('background-image', 'url("images/answer.png")')
+      .css('background-repeat', 'no-repeat')
+      .css('background-position', 'center')
       .css('width', w)
       .css('height', h)
+      .css('border-radius','5px')
       .css('position', 'absolute')
       .appendTo($game)
   }
