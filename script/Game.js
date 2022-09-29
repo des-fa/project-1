@@ -31,6 +31,9 @@ const ObstacleB_BACKGROUND = '#EFEFEF'
 const Item_DIMENSION = { w: 35, h: 35  }
 const Item_VELOCITY = 3
 
+// AUDIO
+// const gameAudio = new Audio("audio/playgame.mp3")
+
 // Util Functions
 
 // Generate Random Number for Obstacle Creation
@@ -236,6 +239,19 @@ function Game() {
   this.startGame = () => {
     $(document).on('keydown', handleKeyDown)
     $(document).on('keyup', handleKeyUp)
+
+    // // Stop Previous Music
+    // $screenAudio.muted = true
+
+    // // Play Game Background Music
+    // const playGameAudio = () => {
+    //   if (gameAudio.paused) {
+    //     gameAudio.play();
+    //   } else {
+    //     gameAudio.currentTime = 0
+    //   }
+    // }
+    // playGameAudio()
 
     // Show Game Screen & Elements
     $startScreen.fadeOut()
