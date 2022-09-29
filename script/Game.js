@@ -5,7 +5,8 @@ import Item from './Item.js'
 
 // JQUERY CONSTANTS
 const $startScreen = $("#start-screen")
-const $instructions = $("#instructions-screen")
+const $firstInstructions = $("#first-instructions-screen")
+const $secondInstructions = $("#second-instructions-screen")
 const $gameOver = $("#game-over-screen")
 const $gameArea = $("#game-area")
 const $countdownDiv = $("#countdown-container")
@@ -293,15 +294,28 @@ function Game() {
     this.bonus = null
   }
 
-  // Show Instructions
-  this.showInstructions = () => {
+  // Show First Instructions
+  this.showFirstInstructions = () => {
     $startScreen.fadeOut()
-    $instructions.fadeIn()
+    $firstInstructions.fadeIn()
+  }
+
+  // Show Second Instructions
+  this.showSecondInstructions = () => {
+    $firstInstructions.fadeOut()
+    $secondInstructions.fadeIn()
+  }
+
+  // Back to First Instructions
+  this.backToFirstInstructions = () => {
+    $secondInstructions.fadeOut()
+    $firstInstructions.fadeIn()
   }
 
   // Back to Start Screen
-  this.backToStart = () => {
-    $instructions.fadeOut()
+  this.backToHome = () => {
+    $firstInstructions.fadeOut()
+    $secondInstructions.fadeOut()
     $startScreen.fadeIn()
   }
 }

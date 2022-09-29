@@ -22,7 +22,33 @@
 .title {
   font-family: 'Press Start 2P', cursive !important;
   color: #EEF1FF !important;
-  /* font-family: 'Ultra', serif !important; */
+}
+
+.instructions-title {
+  border-bottom: 4px dashed !important;
+}
+
+.instructions-heading {
+  color: #A7FFE4 !important;
+  font-weight: bold !important;
+}
+
+.instructions-text {
+  font-size: 16px;
+  font-family: 'Electrolize', sans-serif !important;
+  color: #3C415C !important;
+}
+
+.instructions-text-second {
+  font-size: 14px;
+  font-family: 'Electrolize', sans-serif !important;
+  color: #3C415C !important;
+}
+
+#countdown {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 60px !important;
+  color: #A7FFE4 !important;
 }
 
 .score-text {
@@ -50,7 +76,7 @@
 button {
   font-family: 'Electrolize', sans-serif !important;
   font-weight: bold !important;
-
 }
 
 /* font-family: 'Shrikhand', cursive !important; */
+  /* font-family: 'Ultra', serif !important; */

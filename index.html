@@ -48,8 +48,9 @@
         <div
           class="d-flex flex-column justify-content-end align-items-center w-100 h-100 text-center"
         >
-          <img class='animate__animated mt-2 mb-3'  src="images/fire-exit.png" alt="exit" style="height: 45%;">
-          <h2 class='mb-4 mt-2 title'>Escape Your Issues</h2>
+          <img class='animate__animated mt-2 mb-2'  src="images/fire-exit.png" alt="exit" style="height: 45%;">
+          <h2 class='mb-3 mt-2 title' style="
+    line-height: 1.5;">Escape Your Issues</h2>
 
           <div>
             <button type="button" class="btn btn-outline-dark btn-lg mt-3 mb-1" id="start-btn">
@@ -69,20 +70,94 @@
         </div>
       </div>
 
-      <div id="instructions-screen" style="display: none">
+      <div id="first-instructions-screen" style="display: none">
         <div
-          class="d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center"
+          class="d-flex flex-column justify-content-start align-items-center w-100 h-100"
         >
-          <h2 class="title">Instructions</h2>
-          <p></p>
+          <h2 class="title instructions-title text center mt-5 mb-4">Instructions</h2>
+          <div class="d-flex flex-row justify-content-center align-items-center mb-4 mt-3">
+            <img src="images/arrow-left.png" alt="arrow" style="height: 40px;">
+            <img class="mx-3" src="images/arrow-right.png" alt="arrow" style="height: 40px;">
+            <div class="instructions-text w-50 ms-2 text-end">
+              <span class="instructions-heading">Controls</span><br>
+              Use the left and right arrow keys to hide from the world!
+            </div>
+          </div>
+          <div class="d-flex flex-row-reverse justify-content-center align-items-center my-3">
+            <img src="images/multiple-users-silhouette.png" alt="people" style="height: 55px;">
+            <img class="mx-3" src="images/answer.png" alt="person" style="height: 45px;">
+            <div class="instructions-text w-50 ms-2">
+              <span class="instructions-heading">Obstacles</span><br>
+              Save yourself from experiencing social anxiety by making sure you dodge the chatterboxes and big crowds!
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-center align-items-center my-3">
+            <img class="mx-3" src="images/kiss.png" alt="dog" style="height: 50px;">
+            <div class="instructions-text w-50 ms-4 text-end">
+              <span class="instructions-heading">Reward</span><br>
+              Who needs people when you have (hu)man's best friend accompanying you? Spending time with your furry pal is the reward you deserve!
+            </div>
+          </div>
+          <div class="my-3">
+            <button
+            type="button"
+            class="home-btn btn btn-outline-dark btn-lg mb-5 mt-3 mx-2"
+            >
+            Home
+          </button>
+          <button
+            type="button"
+            class="more-btn btn btn-outline-dark btn-lg mb-5 mt-3 mx-2">
+            More
+          </button>
+          </div>
+        </div>
+      </div>
 
-          <div class="mb-5">
+      <div id="second-instructions-screen" style="display: none">
+        <div
+          class="d-flex flex-column justify-content-start align-items-center w-100 h-100"
+        >
+          <h2 class="title instructions-title text center mt-5 mb-2">Instructions</h2>
+          <div class="d-flex flex-row-reverse justify-content-end align-items-center mt-2">
+            <img class="ms-3" src="images/alcohol.png" alt="wine" style="height: 55px;">
+            <div class="instructions-text-second w-50 ms-5">
+              <span class="instructions-heading">Immunity</span><br>
+              Breeze through all of life's social events with a boost of liquid courage!
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-end align-items-center me-5">
+            <img class="me-3" src="images/coffeecup.png" alt="coffee" style="height: 55px;">
+            <div class="instructions-text-second w-50 me-5 text-end">
+              <span class="instructions-heading">Speed Up</span><br>
+              A coffee (or several) a day gives you the energy to make it through the day! Treat yourself and get that extra oomph you need to make it out alive!
+            </div>
+          </div>
+          <div class="d-flex flex-row-reverse justify-content-end align-items-center">
+            <img class="ms-3" src="images/fireworks.png" alt="party" style="height: 55px;">
+            <div class="instructions-text-second w-50 ms-5">
+              <span class="instructions-heading">Slow Down</span><br>
+              You've been invited to the most stress-inducing group gathering you can't avoid! All the self-introductions and small talk drain your energy!
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-end align-items-center me-5">
+            <img class="me-3" src="images/phone.png" alt="phone" style="height: 55px;">
+            <div class="instructions-text-second w-50 me-5 text-end">
+              <span class="instructions-heading">Limited Vision</span><br>
+              It's a call you can't pretend like you didn't see, unlike a message! Wait nervously until it goes to voicemail  before you resume living.
+            </div>
+          </div>
+
+          <div class="mb-4 mt-2">
             <button
               type="button"
-              class="btn btn-outline-dark btn-lg mb-5 mt-3"
-              id="back-btn"
-            >
-              Back
+              class="home-btn btn btn-outline-dark btn-lg mb-5 mt-3">
+              Home
+            </button>
+            <button
+            type="button"
+            class="back-btn btn btn-outline-dark btn-lg mb-5 mt-3 mx-2">
+            Back
             </button>
           </div>
         </div>
@@ -92,14 +167,14 @@
         <div
           class="d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center"
         >
-          <img class='mt-5 mb-5' src="images/clapping.png" alt="clap" style="height: 25%;">
+          <img class='mt-5 mb-5' src="images/clapping.png" alt="clap" style="height: 20%;">
           <h1 id="game-over-title">The End</h1>
           <p id="game-over-text" class="mx-5 py-3 px-4 my-3 border rounded">You couldn't hide from society, but congratulations for making it this far!</p>
           <h2 class="score-text mt-3">SCORE:<span class="score">0</span></h2>
           <div class="mb-5">
             <button
               type="button"
-              class="btn btn-outline-dark btn-lg mb-5 mt-3"
+              class="btn btn-outline-dark btn-lg mb-2 mt-3"
               id="try-btn"
             >
               Try Again
