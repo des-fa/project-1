@@ -1,51 +1,100 @@
 const itemTypes = {
   normal: {
-    weight: 8,
+    weight: 20,
     reward: 1,
     background: 'transparent',
     effect: function(){
-      console.log('normal', this)
     }
   },
   speedUp: {
-    weight: 1,
+    weight: 3,
     background: '#99FEFF',
     reward: 0,
     effect: function(game){
       // speedUp character
+      $("#coffee")
+        .addClass("animate__bounce")
+        .show()
+        .delay(1000)
+        .queue((next) => {
+          $("#coffee").removeClass("animate__bounce")
+          next()
+        })
       game.player.velocity = 8
       const speedUpCharacter = () => {
         game.player.velocity = 6
+        console.log("finished speed")
+        $("#coffee")
+          .addClass("animate__bounceOut")
+          .delay(1000)
+          .queue((next) => {
+            $("#coffee")
+              .hide()
+              .removeClass("animate__bounceOut")
+            next()
+          })
       }
       setTimeout(speedUpCharacter, 3000)
     }
   },
   immune: {
-    weight: 1,
+    weight: 3,
     background: '#99FEFF',
     reward: 0,
     effect: function(game){
       // turn off collision detection
-      console.log('immune')
+      $("#wine")
+        .addClass("animate__bounce")
+        .show()
+        .delay(1000)
+        .queue((next) => {
+          $("#wine").removeClass("animate__bounce")
+          next()
+        })
       game.detectCollision = false
       const immunity = () => {
         game.detectCollision = true
-        console.log('collide again')
+        console.log("finished immune")
+        $("#wine")
+          .addClass("animate__bounceOut")
+          .delay(1000)
+          .queue((next) => {
+            $("#wine")
+              .hide()
+              .removeClass("animate__bounceOut")
+            next()
+          })
       }
       setTimeout(immunity, 3000)
-
     }
   },
   slowDown: {
-    weight: 1,
+    weight: 3,
     background: '#99FEFF',
     reward: 0,
     effect: function(game){
       // slow down character velocity
-      console.log('slowDown')
+      $("#party")
+        .addClass("animate__bounce")
+        .show()
+        .delay(1000)
+        .queue((next) => {
+          $("#party").removeClass("animate__bounce")
+          next()
+        })
       game.player.velocity = 4
       const slowCharacter = () => {
+        console.log("finished slow")
         game.player.velocity = 6
+        $("#party")
+          .addClass("animate__bounceOut")
+          .delay(1000)
+          .queue((next) => {
+            $("#party")
+              .hide()
+              .removeClass("animate__bounceOut")
+            next()
+          })
       }
       setTimeout(slowCharacter, 3000)
     }
@@ -56,7 +105,6 @@ const itemTypes = {
     reward: 0,
     effect: function(){
       // add game layer to limit vision
-      console.log('blocked', $("#box-effect"))
       $("#box-effect").show()
       const hideBlock = () => {
         $("#box-effect").fadeOut()

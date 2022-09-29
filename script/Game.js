@@ -27,7 +27,7 @@ const ObstacleB_VELOCITY = 4
 const ObstacleB_BACKGROUND = '#EFEFEF'
 
 // ITEM CONSTANTS
-const Item_DIMENSION = { w: 30, h: 30  }
+const Item_DIMENSION = { w: 35, h: 35  }
 const Item_VELOCITY = 3
 
 // Util Functions
@@ -111,11 +111,10 @@ function Game() {
       const weightedObjects = assignObjectWeight.map(([x, y]) => Array(y).fill(x)).flat()
       const randomObjectIndex= Math.floor(Math.random() * weightedObjects.length)
       const randomObject= weightedObjects[randomObjectIndex]
-      console.log(randomObject)
 
       if(randomObject === 'items') {
         // Generate Item w/ Random Position
-        const itemPositions = [0, 80, 160, 240, 320]
+        const itemPositions = [25, 90, 180, 270, 360]
         const randomItemNum= getRandomItemQuantity()
         for (let i = 0; i< randomItemNum; i += 1) {
           const index = Math.floor(Math.random() * itemPositions.length)

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Game</title>
+    <title>Escape Your Issues</title>
 
     <!-- FAVICON -->
     <link
@@ -23,6 +23,14 @@
       integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
       crossorigin="anonymous"
     />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&   family=Play&family=Press+Start+2P&family=Shrikhand&family=Ultra&  display=swap" rel="stylesheet">
 
     <!-- SCRIPTS -->
     <script src="https://kit.fontawesome.com/144ac6acaf.js" crossorigin="anonymous"></script>
@@ -34,16 +42,17 @@
     <script type="module" src="script/main.js" defer></script>
   </head>
 
-  <body>
-    <div id="game-screen">
+  <body class="mt-4">
+    <div id="game-screen" class="border border-dark border-5 rounded border-opacity-75">
       <div id="start-screen">
         <div
           class="d-flex flex-column justify-content-end align-items-center w-100 h-100 text-center"
         >
-          <h1>Title</h1>
+          <img class='animate__animated mt-2 mb-3'  src="images/fire-exit.png" alt="exit" style="height: 45%;">
+          <h2 class='mb-4 mt-2 title'>Escape Your Issues</h2>
 
           <div>
-            <button type="button" class="btn btn-primary btn-lg" id="start-btn">
+            <button type="button" class="btn btn-outline-dark btn-lg mt-3 mb-1" id="start-btn">
               Start
             </button>
           </div>
@@ -51,7 +60,7 @@
           <div class="mb-5">
             <button
               type="button"
-              class="btn btn-primary btn-lg mb-5 mt-3"
+              class="btn btn-outline-dark btn-lg mb-4 mt-3"
               id="instructions-btn"
             >
               Instructions
@@ -64,7 +73,8 @@
         <div
           class="d-flex flex-column justify-content-center align-items-center w-100 h-100 text-center"
         >
-          <h1>Instructions</h1>
+          <h2 class="title">Instructions</h2>
+          <p></p>
 
           <div class="mb-5">
             <button
@@ -97,8 +107,15 @@
       </div>
 
       <div id="game-area" style="display: none">
-        <div id="in-game-counter" style="display: none">
-          <h1>SCORE: <span class="score">0</span></h1>
+        <div id="in-game-counter" style="display: none;">
+          <div class="d-flex w-100 justify-content-between align-items-center text-center" >
+            <h2 class="pt-2 ps-3">SCORE: <span class="score">0</span></h2>
+            <div class='pt-2 pe-3'>
+              <img id="wine" class='animate__animated'  src="images/alcohol.png" alt="wine" style="width: 70px; display: none;">
+              <img id="coffee" class="animate__animated" src="images/coffeecup.png" alt="coffee" style="width: 70px; display: none;">
+              <img id="party" class="animate__animated" src="images/fireworks.png" alt="party" style="width: 60px; display: none;">
+            </div>
+          </div>
         </div>
 
         <div

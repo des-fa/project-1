@@ -13,3 +13,22 @@
   width: 100%;
   height: 100%;
 }
+
+#game-screen{
+  border-color: rgba(127, 132, 135, 0.8) !important;
+  border-width: medium;
+}
+
+.title {
+  font-family: 'Press Start 2P', cursive !important;
+  color: #EEF1FF !important;
+  /* font-family: 'Play', sans-serif !important; */
+  /* font-family: 'Shrikhand', cursive !important; */
+  /* font-family: 'Ultra', serif !important; */
+}
+
+button {
+  font-family: 'Electrolize', sans-serif !important;
+  font-weight: bold !important;
+
+}
