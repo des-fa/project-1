@@ -11,13 +11,26 @@ function ObstacleA({initDimension, initVelocity, initBackground, initPos}, $game
   const init = () => {
     const { id, position: { x, y }, dimension: { w, h }, background } = this
 
+    // const imageCount = Math.floor(w / 32)
+    // const imageURL = 'url("images/users-group.png")'
+    // let newImageURL = null
+    // const imageNum = () => {
+    //   for (let i = 1; i <= imageCount - 1 ; i += 1) {
+    //     newImageURL = (imageURL +', ' + imageURL)
+    //   }
+    // console.log(newImageURL)
+    // return newImageURL
+    // }
+    // imageNum()
+
     this.$elem = $(`<div id="${id}"></div>`)
       .css('left', x)
       .css('top', y)
       .css('background', background)
-      .css('background-size', 'contain')
-      .css('background-image', 'url("images/multiple-users-silhouette.png")')
-      .css('background-position', 'center')
+      .css('background-size', `${h}px ${h}px`)
+      .css('background-image', 'url("images/users-group.png")')
+      .css('background-position', 'left')
+      .css('background-repeat', 'repeat-x')
       .css('border-radius','5px')
       .css('width', w)
       .css('height', h)

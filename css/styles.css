@@ -17,6 +17,7 @@
 #game-screen {
   border-color: rgba(127, 132, 135, 0.8) !important;
   border-width: medium;
+  box-sizing: content-box;
 }
 
 .title {

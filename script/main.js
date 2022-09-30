@@ -10,13 +10,13 @@ const $backBtn = $(".back-btn")
 const $screenAudio = $("#screen-audio")
 const $audioBtn = $("#audio-button")
 
-// LoopAudio
+// Loop Audio
 const loopAudio = () => {
   $screenAudio[0].currentTime = 0
   $screenAudio[0].play()
 }
 
- // Play Background Music on Loop
+ // Play Background Music on Loop w/ Play & Pause Function
 const playScreenAudio = () => {
   $screenAudio[0].paused ? $screenAudio[0].play() : $screenAudio[0].pause()
 }

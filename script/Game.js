@@ -22,17 +22,15 @@ const LOOP_INTERVAL = Math.round(1000 / FPS)
 // OBSTACLE CONSTANTS
 const ObstacleA_DIMENSION = { h: 50 }
 const ObstacleA_VELOCITY = 3.75
+const ObstacleA_SIZES = [100, 150, 200, 250, 300]
 const ObstacleA_BACKGROUND = '#EEF1FF'
 const ObstacleB_DIMENSION = { w: 50, h: 50 }
-const ObstacleB_VELOCITY = 3.75
+const ObstacleB_VELOCITY = 3.8
 const ObstacleB_BACKGROUND = '#EFEFEF'
 
 // ITEM CONSTANTS
 const Item_DIMENSION = { w: 35, h: 35  }
-const Item_VELOCITY = 3
-
-// AUDIO
-// const gameAudio = new Audio("audio/playgame.mp3")
+const Item_VELOCITY = 3.2
 
 // Util Functions
 
@@ -44,7 +42,7 @@ const getRandomMS = () => {
 
 // Generate Random Number for Obstacle Size
 const getRandomSize = () => {
-  let randomSize = Math.floor(Math.random() * (300 - 100 + 1) + 100)
+  let randomSize = ObstacleA_SIZES[Math.floor(Math.random() * ObstacleA_SIZES.length)]
   return randomSize
 }
 
@@ -111,7 +109,7 @@ function Game() {
       let newItem = null
 
       // Weighted Randomization of Objects
-      const assignObjectWeight = [['obstacles', 15], ['items', 9]]
+      const assignObjectWeight = [['obstacles', 17], ['items', 11]]
       const weightedObjects = assignObjectWeight.map(([x, y]) => Array(y).fill(x)).flat()
       const randomObjectIndex= Math.floor(Math.random() * weightedObjects.length)
       const randomObject= weightedObjects[randomObjectIndex]
@@ -239,19 +237,6 @@ function Game() {
   this.startGame = () => {
     $(document).on('keydown', handleKeyDown)
     $(document).on('keyup', handleKeyUp)
-
-    // // Stop Previous Music
-    // $screenAudio.muted = true
-
-    // // Play Game Background Music
-    // const playGameAudio = () => {
-    //   if (gameAudio.paused) {
-    //     gameAudio.play();
-    //   } else {
-    //     gameAudio.currentTime = 0
-    //   }
-    // }
-    // playGameAudio()
 
     // Show Game Screen & Elements
     $startScreen.fadeOut()
